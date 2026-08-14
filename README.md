@@ -20,7 +20,7 @@
 
 ```powershell
 # Windows (PowerShell)
-git clone https://github.com/YOUR_USERNAME/dsh-reply-nav.git
+git clone https://github.com/nicolas-zhao-4/dsh-reply-nav.git
 cd dsh-reply-nav
 ./install.ps1            # 可选参数:profile 名,默认 web
 ```
@@ -29,7 +29,7 @@ cd dsh-reply-nav
 
 ```bash
 # macOS / Linux
-git clone https://github.com/YOUR_USERNAME/dsh-reply-nav.git
+git clone https://github.com/nicolas-zhao-4/dsh-reply-nav.git
 cd dsh-reply-nav
 ./install.sh             # 可选参数:profile 名,默认 web
 ```
@@ -53,7 +53,7 @@ cd dsh-reply-nav
 
 ```bash
 cd ~/.dsh/profiles/<profile>
-npm i --no-save --package-lock=false github:YOUR_USERNAME/dsh-reply-nav
+npm i --no-save --package-lock=false github:nicolas-zhao-4/dsh-reply-nav
 ```
 
 然后同样追加方式 B 里的 patch 行,再刷新页面。
