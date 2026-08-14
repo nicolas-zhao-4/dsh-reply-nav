@@ -1,0 +1,23 @@
+{
+  "name": "dsh-reply-nav",
+  "description": "A DeepSeek Harness web client plugin: a right-edge navigation rail showing one bar per user round, with hover preview and click-to-scroll.",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web"
+    }
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js"
+  ],
+  "license": "MIT"
+}
