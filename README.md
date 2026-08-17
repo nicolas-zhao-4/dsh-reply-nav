@@ -1,26 +1,21 @@
 # dsh-reply-nav
 
-<p align="center">
-  <img src="./assets/reply-nav-demo.gif"
-       alt="dsh-reply-nav running in a live DeepSeek Harness conversation"
-       width="960">
-</p>
+**让长对话，变成一条可导航的时间线。**
 
-<p align="center">
-  <strong>Navigate long DeepSeek Harness conversations by round.</strong><br>
-  Hover a bar to preview the visible answer. Click it to jump there.
-</p>
+[English README](./README.en.md)
 
-- One bar per user round — not per tool-split assistant step
-- Hover for a rendered Markdown preview of explicit reply text only
-- ⚡ Click to jump, with the current round highlighted while scrolling
+![dsh-reply-nav live demo](./assets/reply-nav-demo.gif)
 
-## Demo
+在 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的长对话右侧，按**用户回合**显示导航条：悬停即可预览显式回复，点击即可跳转。工具调用再多，也不会把一个回合拆成一堆难以定位的步骤。
 
-The GIF above is a frame from a live DSH Web session at `http://127.0.0.1:3080/`.
-The original PNG is available at [`assets/reply-nav-hover.png`](./assets/reply-nav-hover.png).
+## 为什么值得用
 
-## Install in 30 seconds
+- **一条横杠 = 一轮对话**：按用户消息导航，而不是按工具拆分的 assistant step 导航
+- **悬停即预览**：显示渲染后的 Markdown 回复，快速判断这一轮是否值得回看
+- **点击即跳转**：滚动到对应回合，当前回合自动高亮
+- **轻量且无侵入**：纯客户端、无后端、无构建步骤，跟随 DSH 主题
+
+## 30 秒安装
 
 ```powershell
 git clone https://github.com/nicolas-zhao-4/dsh-reply-nav.git
@@ -28,100 +23,48 @@ cd dsh-reply-nav
 powershell -ExecutionPolicy Bypass -File ./install.ps1
 ```
 
-Refresh the DSH Web page after installation.
+刷新 DSH Web 页面即可。Linux/macOS 使用 `./install.sh`。
 
-[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的浏览器端插件:在长对话右侧显示一条**导航条**,帮你快速检索和跳转到历史回合。
+## 安装方式
 
-每条横杠 = **一条用户消息(一个回合)**,不是每条 assistant 步骤 —— 因为工具调用会把一次回复拆成很多步,按回合计才能真实反映对话节奏。
+### 一键脚本（推荐）
 
-## 特性
+脚本会把插件复制到 `<profile>/node_modules/`，并幂等地写入 `cordis.patch.yml`。默认 profile 为 `web`。
 
-- **每条横杠对应一轮用户消息**;点击横杠,对话滚动到该回合的位置
-- **悬停预览**:鼠标移到横杠上,左侧弹出该轮模型回复的 Markdown 缩略预览(只含显式回复文本,不含思考过程、不含工具调用)
-- **当前回合自动高亮**(跟随滚动更新)
-- 纯客户端插件:无后端逻辑,半透明毛玻璃风格,跟随 DSH 主题变量
-- 无构建步骤,改完刷新页面即生效
+### 手动安装
 
-## Why round-level navigation?
+将 `package.json` 和 `lib/` 复制到 `~/.dsh/profiles/<profile>/node_modules/dsh-reply-nav/`，然后在 `cordis.patch.yml` 添加：
 
-DeepSeek Harness may split one answer into several assistant steps around tool calls.
-This plugin groups those steps under the preceding user message, so each bar represents
-one conversational round instead of an implementation detail.
-
-## What is included / excluded
-
-- Included: explicit reply text and a compact rendered Markdown preview
-- Excluded: thinking/reasoning blocks and tool calls
-
-## 安装(三选一,都很简单)
-
-> 前提:本机已安装并运行 DeepSeek Harness 的 web GUI。下文 `<profile>` 默认是 `web`(可在 `~/.dsh/profiles/` 下确认你自己的 profile 名;Windows 上 `~` 即 `C:\Users\<你>`)。
-
-### 方式 A:一键安装脚本(推荐)
-
-```powershell
-# Windows (PowerShell)
-git clone https://github.com/nicolas-zhao-4/dsh-reply-nav.git
-cd dsh-reply-nav
-./install.ps1            # 可选参数:profile 名,默认 web
+```yaml
+- insert:
+    - id: reply-nav
+      name: dsh-reply-nav
 ```
 
-> 若 PowerShell 提示执行策略限制,用:`powershell -ExecutionPolicy Bypass -File ./install.ps1`
-
-```bash
-# macOS / Linux
-git clone https://github.com/nicolas-zhao-4/dsh-reply-nav.git
-cd dsh-reply-nav
-./install.sh             # 可选参数:profile 名,默认 web
-```
-
-脚本做的事:把插件拷贝到该 profile 的 `node_modules/`,并把注册行追加到 `cordis.patch.yml`(已存在则跳过,幂等)。然后**刷新浏览器页面**即可。
-
-### 方式 B:手动拷贝
-
-1. 把 `dsh-reply-nav` 文件夹(含 `package.json` 和 `lib/`)复制到 `~/.dsh/profiles/<profile>/node_modules/dsh-reply-nav/`
-2. 编辑 `~/.dsh/profiles/<profile>/cordis.patch.yml`,追加:
-
-   ```yaml
-   - insert:
-       - id: reply-nav
-         name: dsh-reply-nav
-   ```
-
-3. 刷新浏览器页面。
-
-### 方式 C:npm 安装(可选)
+### npm/GitHub
 
 ```bash
 cd ~/.dsh/profiles/<profile>
 npm i --no-save --package-lock=false github:nicolas-zhao-4/dsh-reply-nav
 ```
 
-然后同样追加方式 B 里的 patch 行,再刷新页面。
+然后添加上面的 patch 并刷新页面。
+
+## 包含与排除
+
+- **包含**：显式回复文本、Markdown 预览、回合级跳转
+- **排除**：thinking/reasoning、tool calls
 
 ## 验证与排错
 
-- **刷新页面即可**(不需要重启 dsh);右侧应出现导航条
-- 确认 `http://127.0.0.1:3080/plugins/dsh-reply-nav/client.js` 返回 200
-- ⚠️ **"设置里显示已激活" ≠ 浏览器渲染成功**:设置页的激活状态只代表 node 半边加载成功。UI 没出现时,按 F12 打开浏览器控制台看报错,而不是看设置页
-- 浏览器控制台若有与插件无关的扩展报错,可忽略
+- 刷新页面后，长对话右侧应出现导航条
+- 确认 `http://127.0.0.1:3080/plugins/dsh-reply-nav/client.js` 返回 `200`
+- “设置里已激活”只代表 Node 侧加载成功；UI 未出现时请查看浏览器控制台
 
-## 工作原理(给好奇的人)
+## 原理
 
-- **纯客户端插件**:node 半边 `lib/index.js` 是空的 `apply`(只是为了在 Loader 里"激活");全部 UI 在 `lib/client.js`
-- `package.json` 里 `dsh.client.platform: "web"` + `exports["./client"]` 声明它是一个 web bundle
-- dsh 启动时,`dsh-client-modules` 扫描 loader 行,把 bundle 编入 `window.__DSH_BOOT__`,浏览器通过 `/plugins/dsh-reply-nav/client.js` 加载
-- 组件在 `apply(ctx)` 里通过 `ctx.slots.inject("shell.overlay", ...)` 注册到覆盖层插槽,因此悬浮在页面最上层
-- 注意 bundle 里的 `id` 必须与包名一致(`dsh-reply-nav`),它是浏览器模块表里的模块 id
-
-## 开发
-
-直接编辑 `lib/client.js` 即可,改完刷新页面生效,没有构建步骤。本仓库本身就是"把一个动态 Cordis 插件持久化为开机自启 bundle"的产物,想了解完整迁移过程可参考 DSH 的 `persisting-client-plugins` skill。
+插件通过 `shell.overlay` 注册浮层 UI；客户端从 DSH session snapshot 中聚合每个用户回合的 assistant 显式文本，渲染为预览并绑定跳转。全部 UI 位于 `lib/client.js`，修改后刷新页面即可生效。
 
 ## 许可证
 
 MIT
-
-## Topics
-
-`deepseek-harness` · `dsh` · `dsh-plugin` · `cordis` · `ai-agents`
