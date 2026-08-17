@@ -1,5 +1,35 @@
 # dsh-reply-nav
 
+<p align="center">
+  <img src="./assets/reply-nav-demo.gif"
+       alt="dsh-reply-nav running in a live DeepSeek Harness conversation"
+       width="960">
+</p>
+
+<p align="center">
+  <strong>Navigate long DeepSeek Harness conversations by round.</strong><br>
+  Hover a bar to preview the visible answer. Click it to jump there.
+</p>
+
+- One bar per user round — not per tool-split assistant step
+- Hover for a rendered Markdown preview of explicit reply text only
+- ⚡ Click to jump, with the current round highlighted while scrolling
+
+## Demo
+
+The GIF above is a frame from a live DSH Web session at `http://127.0.0.1:3080/`.
+The original PNG is available at [`assets/reply-nav-hover.png`](./assets/reply-nav-hover.png).
+
+## Install in 30 seconds
+
+```powershell
+git clone https://github.com/nicolas-zhao-4/dsh-reply-nav.git
+cd dsh-reply-nav
+powershell -ExecutionPolicy Bypass -File ./install.ps1
+```
+
+Refresh the DSH Web page after installation.
+
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的浏览器端插件:在长对话右侧显示一条**导航条**,帮你快速检索和跳转到历史回合。
 
 每条横杠 = **一条用户消息(一个回合)**,不是每条 assistant 步骤 —— 因为工具调用会把一次回复拆成很多步,按回合计才能真实反映对话节奏。
@@ -11,6 +41,17 @@
 - **当前回合自动高亮**(跟随滚动更新)
 - 纯客户端插件:无后端逻辑,半透明毛玻璃风格,跟随 DSH 主题变量
 - 无构建步骤,改完刷新页面即生效
+
+## Why round-level navigation?
+
+DeepSeek Harness may split one answer into several assistant steps around tool calls.
+This plugin groups those steps under the preceding user message, so each bar represents
+one conversational round instead of an implementation detail.
+
+## What is included / excluded
+
+- Included: explicit reply text and a compact rendered Markdown preview
+- Excluded: thinking/reasoning blocks and tool calls
 
 ## 安装(三选一,都很简单)
 
